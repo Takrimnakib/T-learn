@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 200px;
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .chat-window {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin-left: 20px;
+      height: 100%;
+    }
+
+    .chat-log {
+      flex-grow: 1;
+      overflow-y: scroll;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+    }
+
+    .message {
+      margin-bottom: 10px;
+      margin-left: 20px;
+    }
+
+    .message-content {
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .user-message .message-content {
+      background-color: #aeaaaa2f;
+      color: #0d0c0c;
+      text-align: left;
+    }
+
+    .bot-message .message-content {
+      background-color: #95919171;
+      color: #333;
+      text-align: left;
+    }
+
+    .input-container {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-left: 20px;
+    }
+
+    .input-container input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    .input-container button {
+      padding: 10px;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 5px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .highlight {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <!-- Add your menu items here -->
+    <ul>
+      <li>Menu Item 1</li>
+      <li>Menu Item 2</li>
+      <li>Menu Item 3</li>
+    </ul>
+  </div>
+  <div class="chat-window">
+    <div class="chat-log" id="chatLog"></div>
+    <div class="input-container">
+      <input type="text" id="userInput" placeholder="আপনার মেসেজটি টাইপ করুন">
+      <button id="sendButton">প্রেরণ করুন</button>
+    </div>
+  </div>
+
+  <script>
+    const chatLog = document.getElementById('chatLog');
+    const userInput = document.getElementById('userInput');
+    const sendButton = document.getElementById('sendButton');
+
+    // Add an event listener for the Enter key
+    userInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault(); // Prevent Enter from adding a new line in the input field
+        sendButton.click(); // Trigger the sendButton click event
+      }
+    });
+
+    sendButton.addEventListener('click', () => {
+      const userMessage = userInput.value;
+      addMessage(userMessage, 'user');
+      respondToUser(userMessage);
+      userInput.value = '';
+    });
+
+    function addMessage(message, sender) {
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message', sender + '-message');
+      const messageContent = document.createElement('div');
+      messageContent.classList.add('message-content');
+
+      // Interpret and render HTML tags in the message
+      messageContent.innerHTML = message;
+
+      messageDiv.appendChild(messageContent);
+      chatLog.appendChild(messageDiv);
+
+      // Scroll to the bottom of the chat log
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function respondToUser(userMessage) {
+      userMessage = userMessage.toLowerCase(); // Convert user input to lowercase for case-insensitive matching
+      
+      const responses = {
+          'জসীম উদ্‌দীন': 'জন্ম : ১ জানুয়ারি ১৯০৩ সালে তাম্বুলখানা গ্রামে , ফরিদপুর জেলায় ।    মৃত্যুঃ  ১৯৭৬ সালের ১৩ মার্চ পল্লীকবি উপাধিতে ভূষিত, জসীম উদ্‌দীন আবহমান বাংলার সাংস্কৃতিক ঐতিহ্যে লালিত প্রথম পূর্ণাঙ্গ আধুনিক কবি।    * কলকাতা বিশ্ববিদ্যালয় থেকে শিক্ষিত জসীম উদ্‌দীন ঢাকা বিশ্ববিদ্যালয়ে ৫ বছর শিক্ষকতা করেন। ১৯৪৪ সালে শিক্ষকতা ছেড়ে তিনি বঙ্গীয় প্রাদেশিক সরকার এবং পরে পূর্ব পাকিস্তান সরকারের প্রচার বিভাগের কর্মকর্তা হিসেবে যোগদান করেন      *  বাংলাদেশ সরকারের একুশে পদক (১৯৭৬) ও স্বাধীনতা পুরস্কারে (মরণোত্তর, ১৯৭৮) ভূষিত হন। তিনি ১৯৭৪ সালে বাংলা একাডেমী সাহিত্য পুরস্কার প্রত্যাখ্যান করেন।[       * মোহাম্মাদ জমীর উদ্দীন মোল্লা তার পূর্ণ নাম         *  বাংলাদেশী রাজনীতিবিদ ব্যারিস্টার মওদুদ আহমেদ ও বীর বিক্রম খেতাবপ্রাপ্ত বাংলাদেশের স্বাধীনতা যুদ্ধের মুক্তিযোদ্ধা এবং প্রধানমন্ত্রীর উপদেষ্টা তৌফিক-ই-ইলাহী চৌধুরী তাঁর দুই জামাতা।         * ১৯৬৯ সনে রবীন্দ্র ভারতী বিশ্ববিদ্যালয় কবিকে সম্মান সূচক ডি লিট উপাধিতে ভূষিত করেন।     * জসীম উদ্দীনের নকশী কাঁথার মাঠ কাব্যটি দি ফিল্ড অব এমব্রয়ডার্ড কুইল্ট এবং বাঙালীর হাসির গল্প  গ্রন্থটি ফোক টেল্স অব ইষ্ট পাকিস্তান  নামে ইংরেজিতে অনূদিত হয়েছে।      * সোজন বাদিয়ার ঘাট কাব্যগ্রন্থটি ইংরিজেতে জিপ্সি ওয়ার্ফ শিরোনামসহ বিভিন্ন ভাষায় অনূদিত হয়েছে।    *  কাব্যগ্রন্থ  - রাখালী (১৯২৭) ,নকশী কাঁথার মাঠ (১৯২৯) , সোজন বাদিয়ার ঘাট (১৯৩৩)  হাসু (১৯৩৮)  মাটির কান্না (১৯৫১)  এক পয়সার বাঁশী (১৯৫৬)   সুচয়নী (১৯৬১) ভয়াবহ সেই দিনগুলিতে (১৯৬২)  মা যে জননী কান্দে (১৯৬৩)  পদ্মা নদীর দেশে (১৯৬৯) মাগো জ্বালায়ে রাখিস আলো (১৯৭৬) কাফনের মিছিল (১৯৭৮) মহরম ইত্যাদি ।        * নাটক- পদ্মাপার (১৯৫০) বেদের মেয়ে (১৯৫১) মধুমালা (১৯৫১) পল্লীবধূ (১৯৫৬)     *  আত্মকথা - যাদের দেখেছি (১৯৫১) ঠাকুর বাড়ির আঙ্গিনায় (১৯৬১) জীবন কথা ( ১৯৬৪)  স্মৃতিপট (১৯৬৪) স্মরণের সরণী বাহি (১৯৭৮)     *উপন্যাস- বোবা কাহিনী (১৯৬৪)         * কবিতার সংকলন গ্রন্থ- সুচয়নী      *  ভ্রমণ কাহিনী- চলে মুসাফির (১৯৫২) হলদে পরির দেশে ( ১৯৬৭) যে দেশে মানুষ বড় (১৯৬৮) জার্মানীর শহরে বন্দরে (১৯৭৫)   * গান- ও কী ও বন্ধু কাজল ভ্রমরা রে , আমার সোনার ময়না পাখি ,  আমার গলার হার খুলে নে , আমার হার কালা করলাম রে , আমায় ভাসাইলি রে , আমায় এতো রাতে,  নদীর কূল নাই কিনার নাই , নিশিতে যাইও ফুলো বনে, ও ভোমরা ,ও আমার দরদি আগে জানলে    * শিশুতোস কাব্য- এক পয়সার বাঁশী     *  শ্রেষ্ঠ কাহিনী কাব্য- নকশী কাঁথার মাঠ   * পল্লী কবি জসীম উদ্‌দীন সংগ্রহশালা একটি ব্যক্তিভিত্তিক জাদুঘর। বাংলাদেশের ফরিদপুর জেলা শহরের অদূরে ২০১৫   * জসীম উদ্দীনের সর্বাধিক বিখ্যাত কবিতার নাম – কব কবিতা ১৯২৫ সালে  কল্লোল পত্রিকায় প্রকাশিত হয়।       * কবর কবিতাটি – রাখালী কাব্যের অন্তর্গত ।  কবি জসীম উদ্দীন রাখালী কাব্যগ্রন্থটি কাকে উৎসর্গ করেছিলেন – লেখকের অন্যতম সহযোগী ড. দীনেশ চন্দ্র সেনকে ।        *নকশী কাঁথার মাঠ’ জসীম উদ্দীনের যে শ্রেণির কাব্য – কাহিনি কাব্য (বিচিত্রা পত্রিকায় প্রকাশিত হয়) ।      * দূরাগত রাথালের বংশী ধ্বনীর মতো তোমার কবিতা পড়ে আমি কেঁদেছি জসীম উদ্দীনের  কবর কবিতা সম্পর্কে উক্তিটি করেছেন – ড. দীনেশ চন্দ্র সেন ।      * নকশী কাঁথার মাঠ  কাহিনি কাব্যের ভূমিকা ও প্রচ্ছদ অঙ্কন করেছিলেন – রবীন্দ্র ভ্রাতা অবনীন্দ্রনাথ ঠাকুর ।       *  মুজিবুর রহমান! ওই নাম যেন বিসুভিয়াসের অগ্নি-উগারী বান (  ভয়াবহ সেই দিনগুলিতে )',
+          'hi': 'আমি ভালো আছি, আপনি কেমন আছেন?',
+          'বৈষ্ণব পদাবলি': 'বৈষ্ণব পদাবলি বা বৈষ্ণব পদাবলী বৈষ্ণব ধর্মতত্ত্বের রসভাষ্য নামে খ্যাত এক শ্রেণীর ধর্মসঙ্গীত সংগ্রহ,<br>সূচনা ঘটে চর্তুদশ শতকে বিদ্যাপতি ও চণ্ডীদাস-এর সময়ে, তবে ষোড়শ শতকে এই সাহিত্যের বিকাশ হয়।',
+          // Add more predefined responses here.
+      };
+
+      const response = responses[userMessage] || 'দুঃখিত, আমি বুঝতে পারছি না।';
+      addMessage(highlightMatchingWords(userMessage, response), 'bot');
+    }
+
+    function highlightMatchingWords(userInput, response) {
+      const userWords = userInput.split(' ');
+      userWords.forEach(word => {
+        if (response.includes(word)) {
+          response = response.replace(new RegExp(word, 'g'), `<span class="highlight">${word}</span>`);
+        }
+      });
+      return response;
+    }
+  </script>
+</body>
+</html>
